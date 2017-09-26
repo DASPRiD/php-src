@@ -673,6 +673,8 @@ exit:
 
 ZEND_API void zend_std_write_property(zval *object, zval *member, zval *value, void **cache_slot) /* {{{ */
 {
+	zval *zv;
+	zend_property_info *property_info;
 	zend_object *zobj;
 	zval tmp_member;
 	zval *variable_ptr;
@@ -704,6 +706,14 @@ ZEND_API void zend_std_write_property(zval *object, zval *member, zval *value, v
 			}
 			if ((variable_ptr = zend_hash_find(zobj->properties, Z_STR_P(member))) != NULL) {
 found:
+				zv = zend_hash_find(&zobj->ce->properties_info, Z_STR_P(member));
+				if (UNEXPECTED(zv != NULL)) {
+					property_info = (zend_property_info*)Z_PTR_P(zv);
+					if (property_info->flags & ZEND_ACC_FINAL) {
+						zend_throw_error(NULL, "Cannot write to final property");
+					}
+				}
+
 				zend_assign_to_variable(variable_ptr, value, IS_CV);
 				goto exit;
 			}

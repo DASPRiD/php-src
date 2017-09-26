@@ -5435,6 +5435,14 @@ static void _property_check_flag(INTERNAL_FUNCTION_PARAMETERS, int mask) /* {{{ 
 }
 /* }}} */
 
+/* {{{ proto public bool ReflectionProperty::isFinal()
+   Returns whether this property is final */
+ZEND_METHOD(reflection_property, isFinal)
+{
+	_property_check_flag(INTERNAL_FUNCTION_PARAM_PASSTHRU, ZEND_ACC_FINAL);
+}
+/* }}} */
+
 /* {{{ proto public bool ReflectionProperty::isPublic()
    Returns whether this property is public */
 ZEND_METHOD(reflection_property, isPublic)
@@ -6545,6 +6553,7 @@ static const zend_function_entry reflection_property_functions[] = {
 	ZEND_ME(reflection_property, getName, arginfo_reflection__void, 0)
 	ZEND_ME(reflection_property, getValue, arginfo_reflection_property_getValue, 0)
 	ZEND_ME(reflection_property, setValue, arginfo_reflection_property_setValue, 0)
+	ZEND_ME(reflection_property, isFinal, arginfo_reflection__void, 0)
 	ZEND_ME(reflection_property, isPublic, arginfo_reflection__void, 0)
 	ZEND_ME(reflection_property, isPrivate, arginfo_reflection__void, 0)
 	ZEND_ME(reflection_property, isProtected, arginfo_reflection__void, 0)
